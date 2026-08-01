@@ -1,66 +1,241 @@
-## Foundry
+# CrowdFunding Smart Contract (Foundry)
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A decentralized crowdfunding smart contract developed in **Solidity** and thoroughly tested using **Foundry**. This project demonstrates secure smart contract development, comprehensive testing methodologies, and security analysis using industry-standard tools.
 
-Foundry consists of:
+---
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Overview
 
-## Documentation
+This smart contract allows users to create decentralized crowdfunding campaigns where contributors can fund a project until a target amount is reached before a specified deadline.
 
-https://book.getfoundry.sh/
+If the funding target is achieved, the project manager can create spending requests, contributors can vote on those requests, and approved requests can be executed.
 
-## Usage
+If the funding target is not achieved before the deadline, contributors are able to claim refunds.
 
-### Build
+---
 
-```shell
-$ forge build
+## Features
+
+- Create crowdfunding campaign
+- Minimum contribution requirement
+- Track contributors and total funds raised
+- Funding deadline
+- Funding target
+- Refund mechanism
+- Spending request creation
+- Contributor voting system
+- Majority voting before payment execution
+- Access control (Manager-only functions)
+
+---
+
+## Smart Contract Functions
+
+### Contribution
+- Contribute ETH to the campaign
+- Tracks contributor balances
+- Updates total raised amount
+
+### Refund
+- Allows contributors to withdraw funds
+- Available only after deadline if target is not achieved
+
+### Create Request
+Manager can create spending requests including:
+- Description
+- Recipient
+- Requested amount
+
+### Vote Request
+- Contributors vote on spending requests
+- Double voting is prevented
+
+### Make Payment
+- Manager executes payment
+- Requires majority approval
+- Prevents duplicate execution
+
+---
+
+## Project Structure
+
+```
+CrowdFunding-Foundry
+│
+├── src
+│   └── CrowdFunding.sol
+│
+├── test
+│   ├── CrowdFundingTest.t.sol
+│   ├── AccessControlTest.t.sol
+│   ├── CrowdFundingFuzzTest.t.sol
+│   ├── CrowdFundingInvariantTest.t.sol
+│   └── ReentrancyAttacker
+│       ├── ReentrancyAttacker.sol
+│       └── CrowdFundingSecurityTest.t.sol
+│
+├── script
+├── lib
+├── foundry.toml
+└── README.md
 ```
 
-### Test
+---
 
-```shell
-$ forge test
+## Testing
+
+The project includes multiple categories of tests.
+
+### Unit Tests
+
+- Constructor
+- Contribution
+- Refund
+- Create Request
+- Voting
+- Payment Execution
+- Access Control
+
+### Fuzz Tests
+
+Randomized input testing for:
+
+- Contributions
+- Payment execution
+- State validation
+
+### Invariant Tests
+
+Ensures important protocol properties always remain true during execution.
+
+### Security Tests
+
+Includes a simulated reentrancy attacker contract to validate contract behavior against common attack vectors.
+
+---
+
+## Static Analysis
+
+Security analysis performed using **Slither**.
+
+Example findings:
+
+- Reentrancy detection
+- Timestamp dependency
+- Boolean comparison improvements
+- Immutable variable suggestions
+- Naming convention improvements
+- Low-level call warnings
+
+---
+
+## Tech Stack
+
+- Solidity
+- Foundry
+- Forge
+- Slither
+- OpenZeppelin Contracts
+
+---
+
+## Running Locally
+
+Clone the repository
+
+```bash
+git clone https://github.com/tapan79/CrowdFunding-Foundry.git
 ```
 
-### Format
+Install dependencies
 
-```shell
-$ forge fmt
+```bash
+forge install
 ```
 
-### Gas Snapshots
+Compile
 
-```shell
-$ forge snapshot
+```bash
+forge build
 ```
 
-### Anvil
+Run all tests
 
-```shell
-$ anvil
+```bash
+forge test
 ```
 
-### Deploy
+Run tests with verbosity
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```bash
+forge test -vvvv
 ```
 
-### Cast
+Generate gas report
 
-```shell
-$ cast <subcommand>
+```bash
+forge test --gas-report
 ```
 
-### Help
+Run Slither
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+```bash
+python -m slither .
 ```
+
+---
+
+## Security Concepts Covered
+
+- Access Control
+- Reentrancy
+- Checks-Effects-Interactions Pattern
+- Refund Logic
+- Majority Voting
+- State Validation
+- Fuzz Testing
+- Invariant Testing
+- Static Analysis
+
+---
+
+## Future Improvements
+
+- Multiple crowdfunding campaigns
+- Event logging
+- Custom errors
+- Gas optimization
+- NatSpec documentation
+- Chainlink integration
+- Upgradeable architecture
+
+---
+
+## Author
+
+**Tapan Preshwala**
+
+**Smart Contract Security** and **Blockchain Auditing**.
+
+Skills:
+
+- Solidity
+- Foundry
+- Smart Contract Security
+- Fuzz Testing
+- Invariant Testing
+- Slither
+- Ethereum
+- DeFi Security
+
+GitHub:
+https://github.com/tapan79
+
+LinkedIn:
+https://www.linkedin.com/in/tapan-p-a73792344
+
+---
+
+## License
+
+MIT
